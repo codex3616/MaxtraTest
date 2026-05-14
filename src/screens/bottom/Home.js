@@ -73,7 +73,7 @@ const Home = () => {
       <Text style={styles.heading}>Posts</Text>
       <FlatList
         data={posts}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={(item, index) => `${item.id}-${index}`}
         renderItem={renderItem}
         onEndReached={loadMore}
         onEndReachedThreshold={0.5}

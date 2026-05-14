@@ -67,7 +67,11 @@ const Login = () => {
             Alert.alert('Success', 'Login successfully!', [
               {
                 text: 'OK',
-                onPress: () => navigation.navigate('Main'),
+                onPress: () =>
+                  navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Main' }],
+                  }),
               },
             ]);
           } catch (err) {

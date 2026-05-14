@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -34,21 +40,15 @@ const Profile = () => {
   };
 
   const handleLogout = async () => {
+    console.log('logout pressed');
     try {
       await AsyncStorage.removeItem('token');
       await AsyncStorage.removeItem('user');
       console.log('logged out successfully');
-
-      Alert.alert('Success', 'Logged out successfully!', [
-        {
-          text: 'OK',
-          onPress: () =>
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'Login' }],
-            }),
-        },
-      ]);
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Login' }],
+      });
     } catch (error) {
       console.log('error logging out', error);
     }
@@ -64,42 +64,44 @@ const Profile = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.heading}>Profile</Text>
+      <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
+        <Text style={styles.heading}>Profile</Text>
 
-      <View style={styles.avatarSection}>
-        <View style={styles.avatar}>
-          <Text style={styles.avatarText}>
-            {user.name.charAt(0).toUpperCase()}
-          </Text>
-        </View>
-        <Text style={styles.name}>{user.name}</Text>
-        <Text style={styles.email}>{user.email}</Text>
-      </View>
-
-      <View style={styles.infoSection}>
-        <View style={styles.infoCard}>
-          <Text style={styles.infoLabel}>Full Name</Text>
-          <Text style={styles.infoValue}>{user.name}</Text>
+        <View style={styles.avatarSection}>
+          <View style={styles.avatar}>
+            <Text style={styles.avatarText}>
+              {user.name.charAt(0).toUpperCase()}
+            </Text>
+          </View>
+          <Text style={styles.name}>{user.name}</Text>
+          <Text style={styles.email}>{user.email}</Text>
         </View>
 
-        <View style={styles.divider} />
+        <View style={styles.infoSection}>
+          <View style={styles.infoCard}>
+            <Text style={styles.infoLabel}>Full Name</Text>
+            <Text style={styles.infoValue}>{user.name}</Text>
+          </View>
 
-        <View style={styles.infoCard}>
-          <Text style={styles.infoLabel}>Email</Text>
-          <Text style={styles.infoValue}>{user.email}</Text>
+          <View style={styles.divider} />
+
+          <View style={styles.infoCard}>
+            <Text style={styles.infoLabel}>Email</Text>
+            <Text style={styles.infoValue}>{user.email}</Text>
+          </View>
+
+          <View style={styles.divider} />
+
+          <View style={styles.infoCard}>
+            <Text style={styles.infoLabel}>Member Since</Text>
+            <Text style={styles.infoValue}>{formatDate(user.createdAt)}</Text>
+          </View>
         </View>
 
-        <View style={styles.divider} />
-
-        <View style={styles.infoCard}>
-          <Text style={styles.infoLabel}>Member Since</Text>
-          <Text style={styles.infoValue}>{formatDate(user.createdAt)}</Text>
-        </View>
-      </View>
-
-      <TouchableOpacity style={styles.logoutBtn}>
-        <Text style={styles.logoutTxt}>Logout</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout}>
+          <Text style={styles.logoutTxt}>Logout</Text>
+        </TouchableOpacity>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -183,6 +185,6 @@ const styles = StyleSheet.create({
   logoutTxt: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: '600',
   },
 });
