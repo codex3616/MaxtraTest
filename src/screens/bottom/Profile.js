@@ -183,6 +183,6 @@ const styles = StyleSheet.create({
   logoutTxt: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '500',
   },
 });
